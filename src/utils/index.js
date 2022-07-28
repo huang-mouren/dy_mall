@@ -1,12 +1,6 @@
-// const keyArray=[];
-// export const isRequest=(requestKey,key)=>{
-//     if(!requestKey.includes(key)){
-//         return true;
-//     }
-//     return false;
-// }
+// 定义观察器实例
+const io = new IntersectionObserver(callback_ioes)
 
-// 检查元素是否出现在可视区域
 export function checkImgs(){
     const imgs = Array.from(document.querySelectorAll(".img"));
     imgs.forEach(item => io.observe(item));
@@ -30,9 +24,6 @@ function callback_ioes(ioes){
       el.onload = el.onerror = () => io.unobserve(el);//停止对其的观察
     })
 }
-
-// 定义观察器实例
-const io = new IntersectionObserver(callback_ioes)
 
 export function throttle(fn, mustRun = 200){
     const timer = null;

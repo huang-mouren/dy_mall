@@ -9,5 +9,5 @@ export const getLiveData=()=>
     axios.get('https://www.fastmock.site/mock/626bc8fcac24ccf6aafae123567b1712/goodsdata/shopping/liveinfo')
 
 
-    export const getVideoData=()=>
+export const getVideoData=()=>
     axios.get('https://www.fastmock.site/mock/626bc8fcac24ccf6aafae123567b1712/goodsdata/shopping/videoinfo')
