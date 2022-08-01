@@ -12,7 +12,7 @@ export default function RoutesConfig() {
         <Route path='/' element={<Navigate to={"/home"} replace />} />
         <Route path='/home' element={<Home/>} />
         <Route path='/orders' element={<Orders />} />
-        <Route path='/digital' element={<Digital />} />
+        <Route path='/' element={<Digital />} />
         <Route path='/purchase/:id' element={<Purchase/>}></Route>
         <Route path='/cart' element={<Cart/>}></Route>
     </Routes>

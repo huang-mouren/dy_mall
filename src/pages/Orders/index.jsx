@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Wrapper, HeaderWrapper, SwiperTabsWrapper, OrdersListWrapper } from './style'
 import { NavBar, Tabs, Swiper,Badge } from 'antd-mobile'
 import { SearchOutline, MoreOutline, } from 'antd-mobile-icons'
 import { useNavigate } from 'react-router'
 import OrdersListItem  from './OrdersListItem'
-import { useSelector } from 'react-redux'
+import { useSelector} from 'react-redux'
+
+import RecommendList from '@/components/RecommednsList'
 const Orders = () => {
 
     const {orders,shops,buyGoods,state}=useSelector((store)=>store.ordersInfo)
@@ -119,7 +121,9 @@ const Orders = () => {
                         <div>退款</div>
                     </Swiper.Item>
                 </Swiper>
+                <RecommendList></RecommendList>
             </OrdersListWrapper>
+            
         </Wrapper>
     )
 }

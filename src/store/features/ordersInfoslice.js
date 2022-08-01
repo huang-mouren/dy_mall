@@ -1,6 +1,13 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
+import { getOrdersInfoRequest } from '@/api/request'
 
+export const getOrdersInfo=createAsyncThunk("ordersInfo/getOrdersInfo",
+    async ()=>{
+        return await getOrdersInfoRequest();
+    }
+)
 const initialState={
+    /**
     orders:{
         byId:{
             "order1":{
@@ -81,7 +88,7 @@ const initialState={
         allIds:["goods1","goods2","goods3","goods4"]
     },
     state:["待支付","待发货","待收货"]
-
+    */
 }
 
 export const ordersInfoSlice=createSlice({
@@ -135,6 +142,15 @@ export const ordersInfoSlice=createSlice({
             
         }
     },
+    extraReducers(builder){
+        builder
+        .addCase(getOrdersInfo.pending,(state)=>{
+            console.log('请求订单数据中。。。')
+        })
+        .addCase(getOrdersInfo.fulfilled,(state,{payload})=>{
+            state=Object.assign(state,payload);
+        })
+    }
 })
 
 export const {deleteOrder,addOrder}=ordersInfoSlice.actions

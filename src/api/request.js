@@ -1,13 +1,10 @@
-import axios from 'axios'
+import { axiosInstance } from "./config";
 
-export const getGoodsData=()=>
-    axios.get('https://www.fastmock.site/mock/626bc8fcac24ccf6aafae123567b1712/goodsdata/shopping/goodsinfo')
+export const getGoodsInfoRequest = () =>
+    axiosInstance.get('/goodsInfo')
 
+export const getOrdersInfoRequest = () =>
+    axiosInstance.get('/ordersInfo')
 
-
-export const getLiveData=()=>
-    axios.get('https://www.fastmock.site/mock/626bc8fcac24ccf6aafae123567b1712/goodsdata/shopping/liveinfo')
-
-
-export const getVideoData=()=>
-    axios.get('https://www.fastmock.site/mock/626bc8fcac24ccf6aafae123567b1712/goodsdata/shopping/videoinfo')
+export const getCartInfoRequest = () =>
+    axiosInstance.get('/cartInfo')

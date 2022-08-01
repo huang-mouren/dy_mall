@@ -1,6 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit";
+import { getCartInfoRequest } from "@/api/request";
+// 使用createAsyncThunk创建异步action
+export const getCartInfo=createAsyncThunk("cartInfo/getCartInfo",
+    async ()=>{
+        return await getCartInfoRequest();
+}) 
+
 // 使用范式化State
 const initialState={
+    /** 
     shops:{
         byId:{
             "mi11":{
@@ -79,6 +87,7 @@ const initialState={
         },
         allIds:["goods11","goods22","goods33","goods44","goods55"]
     }
+    */
 }
 const cartInfoSlice=createSlice({
     name:'cartInfo',
@@ -88,6 +97,7 @@ const cartInfoSlice=createSlice({
         increcount:(state,{payload})=>{
             state.buyGoods.byId[payload.id].count+=1;
         },
+        //购买商品数量减1
         decrecount:(state,{payload})=>{
             state.buyGoods.byId[payload.id].count-=1;
             if(state.buyGoods.byId[payload.id].count<1){
@@ -95,9 +105,11 @@ const cartInfoSlice=createSlice({
                 state.buyGoods.byId[payload.id].count=1;
             }
         },
+        // 改变单件商品的checked状态
         changeChecked:(state,{payload})=>{
             state.buyGoods.byId[payload.id].checked=!state.buyGoods.byId[payload.id].checked;
         },
+        // 改变某个店铺的checked状态 实际是改变单件商品的checked状态
         changeShopAllChecked:(state,{payload})=>{
             // 获取目前是否全选
             const isShopAllChecked= (payload.shop.buyGoods.length == 
@@ -108,6 +120,7 @@ const cartInfoSlice=createSlice({
                 // 将checked设置为目前全选状态的非
                 state.buyGoods.byId[item].checked=!isShopAllChecked);
         },
+        // 改变所有的Checked状态 实际是改变单件商品的checked状态
         changeAllChecked:(state,{payload})=>{
             // 获取目前是否全选
             const isAllChecked= (payload.buyGoods.allIds.length == 
@@ -140,9 +153,45 @@ const cartInfoSlice=createSlice({
                     // 删除该店铺的cartInfo
                     Reflect.deleteProperty(state.shops.byId,item)
                 }
-            })
+            })   
+        },
+        addToCart:(state,{payload})=>{
+            console.log(payload.targetShopInfo,payload.buyGoodsInfo)
+            // 店铺信息处理
+            // 新增商品的所属店铺是否已有
+            // 如果没有 加上
+            if(!state.shops.allIds.includes(payload.targetShopInfo.id)){
+                state.shops.allIds.push(payload.targetShopInfo.id);
+                state.shops.byId[payload.targetShopInfo.id]=payload.targetShopInfo;
+                // 增加buygoods的key
+                state.shops.byId[payload.targetShopInfo.id]={
+                    ...state.shops.byId[payload.targetShopInfo.id],...{buyGoods:[]}};
+            }
+            // 商品信息处理
+            // 已有该商品信息
+            if(state.buyGoods.allIds.includes(payload.buyGoodsInfo.id)){
+                // count 叠加
+                state.buyGoods.byId[payload.buyGoodsInfo.id].count+=payload.buyGoodsInfo.count
+            }else{
+                // 没有 新增商品信息
+                state.buyGoods.allIds.push(payload.buyGoodsInfo.id);
+                state.buyGoods.byId[payload.buyGoodsInfo.id]=payload.buyGoodsInfo
+                // 将新增商品信息添加到该店铺下
+                state.shops.byId[payload.targetShopInfo.id].buyGoods.push(payload.buyGoodsInfo.id)
+            }
+            // 商品信息处理完毕
+
             
         }
+    },
+    extraReducers(builder){
+        builder
+        .addCase(getCartInfo.pending,(state)=>{
+            console.log('请求购物车数据中。。。')
+        })
+        .addCase(getCartInfo.fulfilled,(state,{payload})=>{
+            state=Object.assign(state,payload)
+        })
     }
 })
 export const {
@@ -151,7 +200,8 @@ export const {
         changeChecked,
         changeShopAllChecked,
         changeAllChecked,
-        deleteCartList
+        deleteCartList,
+        addToCart
 }=cartInfoSlice.actions
 
 export default cartInfoSlice.reducer

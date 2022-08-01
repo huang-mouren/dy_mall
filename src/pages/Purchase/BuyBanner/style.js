@@ -4,7 +4,6 @@ export const Wrapper = styled.div`
         height: 75vh;
         display: flex;
         margin: .5rem 0.5rem;
-        
         justify-content: space-between;
         flex-direction: column;
         .buy-info{
@@ -26,8 +25,7 @@ export const Wrapper = styled.div`
                         margin: 0 .2rem;
                     }
                 }
-            }
-            
+            }   
         }
         .buy-count{
             display: flex;

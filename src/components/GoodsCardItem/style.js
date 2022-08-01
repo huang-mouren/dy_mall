@@ -25,6 +25,7 @@ export const Wrapper=styled.div`
             width: 8.25rem;
             padding: .4rem .4rem;
             .item_name{
+                color: black;
                 font-size: 1rem;
                 max-height: 2rem;
                 overflow: hidden;

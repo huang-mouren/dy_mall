@@ -1,12 +1,16 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { Wrapper,JumboTabsWrapper,ChosenWrapper,RecommendWrapper} from './style'
 import Header from './Header'
-import {JumboTabs} from 'antd-mobile'
+import {JumboTabs,SpinLoading} from 'antd-mobile'
 import { Link } from 'react-router-dom'
 import {Badge} from 'antd-mobile' 
+import Loading from '@/components/Loading'
 // 通过useSelector 直接获取store里的state
-import { useSelector } from 'react-redux'
+import { useSelector ,useDispatch} from 'react-redux'
 import GoodsCardItem from '@/components/GoodsCardItem'
+import { getGoodsInfo } from '@/store/features/goodsInfoSlice'
+import { getCartInfo } from '@/store/features/cartInfoSlice'
+import { getOrdersInfo } from '@/store/features/ordersInfoslice'
 import butie from '@/assets/images/butie.webp'
 import shuma from '@/assets/images/shuma.webp'
 import baihuo from '@/assets/images/baihuo.webp'
@@ -21,7 +25,18 @@ import goods2 from '@/assets/images/goods2.jpg'
 const Home = () => {
 
     const {orders}=useSelector((store)=>store.ordersInfo)
-    const {goods,shops}=useSelector((store=>store.goodsInfo))
+    const {goods,shops,loading}=useSelector((store=>store.goodsInfo))
+    // const [isLoading,setIsLoading]=useState(loading)
+    const dispatch=useDispatch()
+    useEffect(()=>{
+        if(!loading){
+            dispatch(getCartInfo())
+            dispatch(getOrdersInfo())
+            dispatch(getGoodsInfo())
+            // setIsLoading()
+        }
+        // console.log(goods);
+    },[])
     const rederUserJumboTabs = () => {
         return (
             <JumboTabs>
@@ -37,26 +52,26 @@ const Home = () => {
                 </Link>}
                     description={<Link to='/orders'>我的订单</Link>} key='orders'
                 />
-                <JumboTabs.Tab title={<Link to='/orders'><i className='iconfont icon-pingjiayouli'/></Link>}
-                    description={<Link to='/orders'>评价中心</Link>} key='comment'
+                <JumboTabs.Tab title={<Link to='/'><i className='iconfont icon-pingjiayouli'/></Link>}
+                    description={<Link to='/'>评价中心</Link>} key='comment'
                 />
-                <JumboTabs.Tab title={<Link to='/refund'><i className='iconfont icon-tuikuan'/></Link>}
-                    description={<Link to='/orders'>退款/售后</Link>} key='refund'
+                <JumboTabs.Tab title={<Link to='/'><i className='iconfont icon-tuikuan'/></Link>}
+                    description={<Link to='/'>退款/售后</Link>} key='refund'
                 />
-                <JumboTabs.Tab title={<Link to='/orders'><i className='iconfont icon-kefuxiaoxi'/></Link>}
-                    description={<Link to='/orders'>客服消息</Link>} key='message'
+                <JumboTabs.Tab title={<Link to='/'><i className='iconfont icon-kefuxiaoxi'/></Link>}
+                    description={<Link to='/'>客服消息</Link>} key='message'
                 />
-                <JumboTabs.Tab title={<Link to='/orders'><i className='iconfont icon-a-youhuiquankaquan'/></Link>}
-                    description={<Link to='/orders'>券红包</Link>} key='coupons'
+                <JumboTabs.Tab title={<Link to='/'><i className='iconfont icon-a-youhuiquankaquan'/></Link>}
+                    description={<Link to='/'>券红包</Link>} key='coupons'
                 />
-                <JumboTabs.Tab title={<Link to='/address'><i className='iconfont icon-dizhiguanli'/></Link>}
-                    description={<Link to='/orders'>地址</Link>} key='address'
+                <JumboTabs.Tab title={<Link to='/'><i className='iconfont icon-dizhiguanli'/></Link>}
+                    description={<Link to='/'>地址</Link>} key='address'
                 />
-                <JumboTabs.Tab title={<Link to='/orders'><i className='iconfont icon-zuji'/></Link>}
-                    description={<Link to='/orders'>足迹</Link>} key='track'
+                <JumboTabs.Tab title={<Link to='/'><i className='iconfont icon-zuji'/></Link>}
+                    description={<Link to='/'>足迹</Link>} key='track'
                 />
-                <JumboTabs.Tab title={<Link to='/orders'><i className='iconfont icon-shoucang1'/></Link>}
-                    description={<Link to='/orders'>收藏</Link>} key='collection'
+                <JumboTabs.Tab title={<Link to='/'><i className='iconfont icon-shoucang1'/></Link>}
+                    description={<Link to='/'>收藏</Link>} key='collection'
                 />
             </JumboTabs>
         )
@@ -64,21 +79,21 @@ const Home = () => {
     const renderTypeJumboTabs = () => {
         return (
             <JumboTabs>
-                <JumboTabs.Tab title={<Link to='/digital'>{renderIconImg(butie)}</Link>} 
-                    description={<Link to='/digital'>百亿补贴</Link>} key='subsidy' />
-                <JumboTabs.Tab title={<Link to='/digital'>{renderIconImg(baihuo)}</Link>}
-                     description={<Link to='/digital'>百货超市</Link>} key='mall' />
-                <JumboTabs.Tab title={<Link to='/digital'>{renderIconImg(shuma)}</Link>} 
-                    description={<Link to='/digital'>手机数码</Link>} key='digital' 
+                <JumboTabs.Tab title={<Link to='/'>{renderIconImg(butie)}</Link>} 
+                    description={<Link to='/'>百亿补贴</Link>} key='subsidy' />
+                <JumboTabs.Tab title={<Link to='/'>{renderIconImg(baihuo)}</Link>}
+                     description={<Link to='/'>百货超市</Link>} key='mall' />
+                <JumboTabs.Tab title={<Link to='/'>{renderIconImg(shuma)}</Link>} 
+                    description={<Link to='/'>手机数码</Link>} key='digital' 
                 />
-                <JumboTabs.Tab title={<Link to='/digital'>{renderIconImg(fuzhuang)}</Link>} 
-                    description={<Link to='/digital'>潮品服饰</Link>} key='clothes' />
-                <JumboTabs.Tab title={<Link to='/digital'>{renderIconImg(meizhuang)}</Link>} 
-                    description={<Link to='/digital'>抖in美妆</Link>} key='makeup' />
-                <JumboTabs.Tab title={<Link to='/digital'>{renderIconImg(jujia)}</Link>} 
-                    description={<Link to='/digital'>居家好物</Link>} key='Household' />
-                <JumboTabs.Tab title={<Link to='/digital'>{renderIconImg(zubao)}</Link>} 
-                    description={<Link to='/digital'>珠宝美饰</Link>} key='jewelry' />
+                <JumboTabs.Tab title={<Link to='/'>{renderIconImg(fuzhuang)}</Link>} 
+                    description={<Link to='/'>潮品服饰</Link>} key='clothes' />
+                <JumboTabs.Tab title={<Link to='/'>{renderIconImg(meizhuang)}</Link>} 
+                    description={<Link to='/'>抖in美妆</Link>} key='makeup' />
+                <JumboTabs.Tab title={<Link to='/'>{renderIconImg(jujia)}</Link>} 
+                    description={<Link to='/'>居家好物</Link>} key='Household' />
+                <JumboTabs.Tab title={<Link to='/'>{renderIconImg(zubao)}</Link>} 
+                    description={<Link to='/'>珠宝美饰</Link>} key='jewelry' />
             </JumboTabs>
         )
     }
@@ -127,7 +142,8 @@ const Home = () => {
         </div>
     )
     return (
-        <Wrapper>
+        loading?
+        (<Wrapper>
             
             <Header />
             <JumboTabsWrapper className='bg_inherit'>
@@ -158,9 +174,11 @@ const Home = () => {
                     })}
                 </div>
             </RecommendWrapper>
-        </Wrapper>
+        </Wrapper>)
+        :(  <Loading/>
+            )
     )
 }
 
 
-export default Home
+export default React.memo(Home)

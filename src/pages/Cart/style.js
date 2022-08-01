@@ -16,13 +16,13 @@ export const HeaderWrapper=styled.div`
     background-color: #f5f5f5;
     position: sticky;
     top: 0;
+    z-index: 999;
 `
 export const ListWrapper=styled.div`
 `
 export const FooterWrapper=styled.div`
     position: sticky;
     bottom: 0;
-
     padding: .8rem .8rem;
     display: flex;
     justify-content: space-between;

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Wrapper,HeaderWrapper,ListWrapper ,FooterWrapper} from './style'
 import {NavBar,Toast,Modal} from 'antd-mobile'
 import CartListItem from './CartListItem'
+import RecommendList from '@/components/RecommednsList'
 import { useNavigate } from 'react-router'
 import {Checkbox} from 'antd-mobile'
 // 使用useSelector直接得到store的State 使用useDispatch派发action
@@ -106,6 +107,7 @@ const Cart = () => {
                     })}
                 </ListWrapper>
             </div>
+            <RecommendList></RecommendList>
             <FooterWrapper >
                 {renderCartFooter()}
             </FooterWrapper>

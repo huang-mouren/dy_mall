@@ -2,9 +2,10 @@ import React from 'react'
 import { Wrapper } from './style'
 import LazyLoad from 'react-lazyload'
 import temp from '@/assets/images/temp.jpg'
+import { Link } from 'react-router-dom'
 const GoodsCardItem = ({goodsData}) => {
-    console.log(goodsData);
-    const {name,imgUrl,price}=goodsData
+
+    const {id,name,imgUrl,price}=goodsData
     const renderItem = () => {
         return (
             <div className="item_wrapper">
@@ -25,9 +26,11 @@ const GoodsCardItem = ({goodsData}) => {
         )
     }
     return (
-        <Wrapper>
-            {renderItem()}
-        </Wrapper>
+        <Link to={`/purchase/${id}`}>
+            <Wrapper>
+                {renderItem()}
+            </Wrapper>
+        </Link>
     )
 
 }

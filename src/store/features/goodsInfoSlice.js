@@ -1,7 +1,21 @@
 // 通过createSlice 创建Slice
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit";
+import { getGoodsInfoRequest } from "@/api/request";
 
+// 使用createAsyncThunk创建异步action
+// 该方法触发时会有三种状态
+// pending(进行中) fulfilled(成功)，rejected(失败)
+export const getGoodsInfo=createAsyncThunk('goodsInfo/getGoodsInfo', //type
+    // data
+    async ()=>{
+        // console.log(await getGoodsInfoRequest())
+        return  await getGoodsInfoRequest()
+        // return data;
+    }
+)
 const initialState={
+    loading:false
+    /** 
     goods:{
         byId:{
             1:{
@@ -73,6 +87,7 @@ const initialState={
         },
         allIds:["mi111","mi222"]
     },
+    */
 }
 export const goodsInfoSlice=createSlice({
     //包含name,initialState,reducers等
@@ -81,6 +96,23 @@ export const goodsInfoSlice=createSlice({
     reducers:{
         // 定义reducer的方法 接收参数state和-action-> 有type 和payload->包含传所有传参
     },
+    // extraReducers 字段让 slice 处理在别处定义的 actions， 
+    // 包括由 createAsyncThunk 或其他slice生成的actions。
+    extraReducers(builder){
+        builder
+        .addCase(getGoodsInfo.pending,(state)=>{
+            console.log('请求数据中。。。');
+            // state.loading=false;
+        })
+        .addCase(getGoodsInfo.fulfilled,(state,{payload})=>{
+            console.log('请求数据完成',payload);
+            state=Object.assign(state,payload)
+            state.loading=true;
+        })
+        .addCase(getGoodsInfo.rejected,(state,err)=>{
+            console.log('请求数据失败',err)
+        })
+    }
 }   
 )
 
